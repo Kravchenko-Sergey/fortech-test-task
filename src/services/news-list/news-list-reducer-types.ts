@@ -1,4 +1,10 @@
-import { setChildCommentsAC, setNewsListAC, setSelectedItemAC, setSelectedItemCommentsAC } from './news-list-reducer'
+import {
+	deleteSelectedItemCommentsAC,
+	setChildCommentsAC,
+	setNewsListAC,
+	setSelectedItemAC,
+	setSelectedItemCommentsAC
+} from './news-list-reducer'
 
 export type InitialStateType = {
 	newsList: ListType[]
@@ -23,6 +29,7 @@ export type ListType = {
 export type SetNewsListACType = ReturnType<typeof setNewsListAC>
 export type SetSelectedItemACType = ReturnType<typeof setSelectedItemAC>
 export type SetSelectedItemCommentsACType = ReturnType<typeof setSelectedItemCommentsAC>
+export type DeleteSelectedItemCommentsACType = ReturnType<typeof deleteSelectedItemCommentsAC>
 export type SetChildCommentsACType = ReturnType<typeof setChildCommentsAC>
 
 export type ActionsType =
@@ -30,3 +37,4 @@ export type ActionsType =
 	| SetSelectedItemACType
 	| SetSelectedItemCommentsACType
 	| SetChildCommentsACType
+	| DeleteSelectedItemCommentsACType

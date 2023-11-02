@@ -18,6 +18,8 @@ export const newsListReducer = (state: InitialStateType = initialState, action: 
 			return { ...state, selectedItem: { ...state.selectedItem.comments, ...action.item } }
 		case 'SET_SELECTED_ITEM_COMMENTS':
 			return { ...state, selectedItem: { comments: action.comments } }
+		case 'DELETE_SELECTED_ITEM_COMMENTS':
+			return { ...state, selectedItem: { comments: [] } }
 		case 'SET_CHILD_COMMENTS':
 			return { ...state, selectedItem: { comments: action.comments } }
 		default:
@@ -28,6 +30,7 @@ export const newsListReducer = (state: InitialStateType = initialState, action: 
 export const setNewsListAC = (newsList: ListType[]) => ({ type: 'SET_NEWS_LIST', newsList }) as const
 export const setSelectedItemAC = (item: any) => ({ type: 'SET_ITEM', item }) as const
 export const setSelectedItemCommentsAC = (comments: any) => ({ type: 'SET_SELECTED_ITEM_COMMENTS', comments }) as const
+export const deleteSelectedItemCommentsAC = () => ({ type: 'DELETE_SELECTED_ITEM_COMMENTS' }) as const
 export const setChildCommentsAC = (comments: any) => ({ type: 'SET_CHILD_COMMENTS', comments }) as const
 
 export const fetchNewsList = () => async (dispatch: Dispatch) => {

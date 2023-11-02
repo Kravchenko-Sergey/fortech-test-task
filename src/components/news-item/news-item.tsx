@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import s from './news-item.module.scss'
 import { useAppDispatch, useAppSelector } from '../../services/store'
 import {
+	deleteSelectedItemCommentsAC,
 	fetchChildComments,
 	fetchSelectedItem,
 	fetchSelectedItemComments
@@ -27,7 +28,10 @@ export const NewsItem = () => {
 	const hours = date.getHours()
 	const minutes = date.getMinutes()
 
-	const handleNewsListReturn = () => navigate('/')
+	const handleNewsListReturn = () => {
+		dispatch(deleteSelectedItemCommentsAC())
+		navigate('/')
+	}
 
 	const handleUpdateComments = () => {
 		if (data!.kids && data?.kids?.length) {
@@ -46,7 +50,7 @@ export const NewsItem = () => {
 			if (!data) {
 				dispatch(fetchSelectedItem(Number(id)))
 			}
-			if (data!.kids && data?.kids?.length) {
+			if (data?.kids && data?.kids?.length) {
 				dispatch(fetchSelectedItemComments(data!.kids))
 			}
 		}
