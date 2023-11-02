@@ -1,3 +1,5 @@
+import { ActionsType, InitialStateType, StatusType } from './app-reducer-types'
+
 const initialState: InitialStateType = {
 	status: 'idle',
 	error: null
@@ -16,15 +18,3 @@ export const appReducer = (state: InitialStateType = initialState, action: Actio
 
 export const setStatusAC = (status: StatusType) => ({ type: 'SET_STATUS', status }) as const
 export const setErrorAC = (error: string | null) => ({ type: 'SET_ERROR', error }) as const
-
-export type InitialStateType = {
-	status: string
-	error: string | null
-}
-
-export type StatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
-
-export type SetStatusACType = ReturnType<typeof setStatusAC>
-export type SetErrorACType = ReturnType<typeof setErrorAC>
-
-type ActionsType = SetStatusACType | SetErrorACType

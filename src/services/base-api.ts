@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { GetNewsCommentResponse, GetNewsItemResponse, GetNewsListResponse } from './base-api-types'
 
 export const settings = {}
 
@@ -17,28 +18,4 @@ export const newsListApi = {
 	getNewsComments(id: number | undefined) {
 		return instance.get<GetNewsCommentResponse>(`item/${id}.json`)
 	}
-}
-
-export type GetNewsListResponse = number[]
-
-export type GetNewsItemResponse = {
-	by: string
-	descendants: number
-	id: number
-	score: number
-	text: string
-	time: number
-	title: string
-	type: string
-	url: string
-}
-
-export type GetNewsCommentResponse = {
-	by: string
-	id: number
-	parent: number
-	kids?: number[]
-	text: string
-	time: number
-	type: string
 }

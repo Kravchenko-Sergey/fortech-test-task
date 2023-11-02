@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux'
 import { newsListApi } from '../base-api'
-import { setStatusAC } from '../app-reducer'
-import { Comment } from '../../components/news-item/news-item'
+import { setErrorAC, setStatusAC } from '../app-reducer'
+import { ActionsType, InitialStateType, ListType } from './news-list-reducer-types'
 
 const initialState: InitialStateType = {
 	newsList: [],
@@ -32,63 +32,56 @@ export const setChildCommentsAC = (comments: any) => ({ type: 'SET_CHILD_COMMENT
 
 export const fetchNewsList = () => async (dispatch: Dispatch) => {
 	dispatch(setStatusAC('loading'))
-	const data = await newsListApi.getNewsList()
-	const data2 = data.data.map((el: number) => newsListApi.getNewsItem(el))
-	Promise.all(data2.slice(0, 200)).then(res => {
-		const data = res.map(d => d.data)
-		dispatch(setNewsListAC(data.filter(d => d !== null)))
-		dispatch(setStatusAC('succeeded'))
-	})
+	try {
+		const data = await newsListApi.getNewsList()
+		const data2 = data.data.map((el: number) => newsListApi.getNewsItem(el))
+		Promise.all(data2.slice(0, 200)).then(res => {
+			const data = res.map(d => d.data)
+			dispatch(setNewsListAC(data.filter(d => d !== null)))
+			dispatch(setStatusAC('succeeded'))
+		})
+	} catch (error) {
+		setStatusAC('failed')
+		setErrorAC(String(error))
+	}
 }
 
 export const fetchSelectedItem = (id: number) => async (dispatch: Dispatch) => {
-	const data2 = await newsListApi.getNewsItem(id)
-	dispatch(setSelectedItemAC(data2.data))
+	try {
+		const data2 = await newsListApi.getNewsItem(id)
+		dispatch(setSelectedItemAC(data2.data))
+	} catch (error) {
+		setStatusAC('failed')
+		setErrorAC(String(error))
+	}
 }
 
 export const fetchSelectedItemComments = (commentsIds: number[]) => async (dispatch: Dispatch) => {
 	dispatch(setStatusAC('loading'))
-	const data2 = commentsIds.map((el: number) => newsListApi.getNewsComments(el))
-	Promise.all(data2).then(res => {
-		const data = res.map(d => d.data)
-		dispatch(setSelectedItemCommentsAC(data.filter(d => d !== null)))
-		dispatch(setStatusAC('succeeded'))
-	})
-}
-
-export const fetchChildComments = (kids: Comment[]) => (dispatch: Dispatch) => {
-	dispatch(setStatusAC('loading'))
-	const data = kids.map((el: any) => newsListApi.getNewsComments(el))
-	Promise.all(data).then(res => {
-		const data2 = res.map(d => d.data)
-		dispatch(setChildCommentsAC(data2))
-		dispatch(setStatusAC('succeeded'))
-	})
-}
-
-type InitialStateType = {
-	newsList: ListType[]
-	selectedItem: {
-		comments: []
+	try {
+		const data2 = commentsIds.map((el: number) => newsListApi.getNewsComments(el))
+		Promise.all(data2).then(res => {
+			const data = res.map(d => d.data)
+			dispatch(setSelectedItemCommentsAC(data.filter(d => d !== null)))
+			dispatch(setStatusAC('succeeded'))
+		})
+	} catch (error) {
+		setStatusAC('failed')
+		setErrorAC(String(error))
 	}
 }
 
-export type ListType = {
-	by: string
-	descendants: number
-	kids?: number[]
-	text: string
-	id: number
-	score: number
-	time: number
-	title: string
-	type: string
-	url: string
+export const fetchChildComments = (kids: number[]) => (dispatch: Dispatch) => {
+	dispatch(setStatusAC('loading'))
+	try {
+		const data = kids.map((el: number) => newsListApi.getNewsComments(el))
+		Promise.all(data).then(res => {
+			const data2 = res.map(d => d.data)
+			dispatch(setChildCommentsAC(data2))
+			dispatch(setStatusAC('succeeded'))
+		})
+	} catch (error) {
+		setStatusAC('failed')
+		setErrorAC(String(error))
+	}
 }
-
-export type SetNewsListACType = ReturnType<typeof setNewsListAC>
-export type SetSelectedItemACType = ReturnType<typeof setSelectedItemAC>
-export type SetSelectedItemCommentsACType = ReturnType<typeof setSelectedItemCommentsAC>
-export type SetChildCommentsACType = ReturnType<typeof setChildCommentsAC>
-
-type ActionsType = SetNewsListACType | SetSelectedItemACType | SetSelectedItemCommentsACType | SetChildCommentsACType

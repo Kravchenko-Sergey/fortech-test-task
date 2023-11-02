@@ -7,29 +7,29 @@ import {
 	fetchSelectedItem,
 	fetchSelectedItemComments
 } from '../../services/news-list/news-list-reducer'
-import { useSelector } from 'react-redux'
 import { Loader } from '../loader/loader'
+import { newsListSelectors } from '../../services/news-list/news-list-selectors'
+import { appSelectors } from '../../services/app-selectors'
+import { GetNewsItemResponse } from '../../services/base-api-types'
 
 export const NewsItem = () => {
 	const { id } = useParams()
 	const navigate = useNavigate()
-
 	const dispatch = useAppDispatch()
+	const data = useAppSelector(state => state.newsList.newsList.find((d: GetNewsItemResponse) => d.id === +id!))
+	const comments = useAppSelector(newsListSelectors.selectComments)
+	const status = useAppSelector(appSelectors.selectStatus)
 
-	const data = useAppSelector((state: AppRootStateType) => state.newsList.newsList.find((d: any) => d.id === +id!))
-	const comments = useAppSelector((state: AppRootStateType) => state.newsList.selectedItem.comments)
-	const status = useSelector((state: AppRootStateType) => state.app.status)
-
-	const date = new Date(data!.time * 1000)
+	const date = data ? new Date(data.time * 1000) : new Date()
 	const year = date.getFullYear()
 	const month = date.getMonth() + 1
 	const day = date.getDate()
 	const hours = date.getHours()
 	const minutes = date.getMinutes()
 
-	const handleNewsListReturn = () => {
-		navigate('/')
-	}
+	const handleNewsListReturn = () => navigate('/')
+
+	console.log(data)
 
 	const handleUpdateComments = () => {
 		if (data!.kids && data?.kids?.length) {
@@ -37,7 +37,7 @@ export const NewsItem = () => {
 		}
 	}
 
-	const handleComment = (kids: any) => {
+	const handleComment = (kids: number[] | undefined) => {
 		if (kids) {
 			dispatch(fetchChildComments(kids))
 		}

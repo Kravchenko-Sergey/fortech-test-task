@@ -1,17 +1,18 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import s from './news-list.module.scss'
-import { AppRootStateType, useAppDispatch } from '../../services/store'
+import { useAppDispatch, useAppSelector } from '../../services/store'
 import { fetchNewsList } from '../../services/news-list/news-list-reducer'
-import { useSelector } from 'react-redux'
-import { GetNewsItemResponse } from '../../services/base-api'
 import { Loader } from '../loader/loader'
+import { appSelectors } from '../../services/app-selectors'
+import { newsListSelectors } from '../../services/news-list/news-list-selectors'
+import { GetNewsItemResponse } from '../../services/base-api-types'
 
 export const NewsList = () => {
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
-	const data = useSelector((state: AppRootStateType) => state.newsList.newsList)
-	const status = useSelector((state: AppRootStateType) => state.app.status)
+	const data = useAppSelector(newsListSelectors.selectNewsList)
+	const status = useAppSelector(appSelectors.selectStatus)
 
 	useEffect(() => {
 		dispatch(fetchNewsList())
@@ -19,13 +20,9 @@ export const NewsList = () => {
 		return () => clearInterval(interval)
 	}, [])
 
-	const handleItem = (id: number) => {
-		navigate(`${id}`)
-	}
+	const handleItem = (id: number) => navigate(`${id}`)
 
-	const handleUpdateNews = () => {
-		dispatch(fetchNewsList())
-	}
+	const handleUpdateNews = () => dispatch(fetchNewsList())
 
 	return (
 		<div className={s.container}>
