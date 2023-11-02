@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import s from './news-item.module.scss'
-import { AppRootStateType, useAppDispatch, useAppSelector } from '../../services/store'
+import { useAppDispatch, useAppSelector } from '../../services/store'
 import {
 	fetchChildComments,
 	fetchSelectedItem,
@@ -28,8 +28,6 @@ export const NewsItem = () => {
 	const minutes = date.getMinutes()
 
 	const handleNewsListReturn = () => navigate('/')
-
-	console.log(data)
 
 	const handleUpdateComments = () => {
 		if (data!.kids && data?.kids?.length) {
