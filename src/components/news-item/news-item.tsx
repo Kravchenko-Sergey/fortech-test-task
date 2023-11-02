@@ -81,7 +81,8 @@ export const NewsItem = () => {
 						<div>
 							{comments.map((el: Comment) => (
 								<div key={el.id} onClick={() => handleComment(el.kids)} className={s.comment}>
-									{el.text}
+									<div className={s.authorComment}>{el.by}:</div>
+									<div>{el.text}</div>
 								</div>
 							))}
 						</div>
