@@ -1,0 +1,94 @@
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  font-size: 14px;
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+.row {
+  display: flex;
+  width: 100%;
+
+  &:hover {
+    background-color: #8d9094;
+  }
+}
+
+.headCell {
+  background-color: #8d9094;
+  border: 1px solid black;
+  display: flex;
+  padding: 6px;
+}
+
+.tableCell {
+  border: 1px solid black;
+  padding: 6px;
+}
+
+.cellTitle {
+flex: 1 1 55%;
+}
+
+.cellScore {
+  flex: 1 1 15%;
+}
+
+.cellBy {
+  flex: 1 1 15%;
+}
+
+.cellTime {
+  flex: 1 1 15%;
+}
+
+.btn {
+  cursor: pointer;
+
+  width: fit-content;
+  padding: 6px 24px;
+  margin-top: 20px;
+  margin-right: 20px;
+
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+
+  border-radius: 2px;
+
+  transition:
+          color 0.3s ease,
+          border 0.3s ease,
+          background-color 0.3s ease;
+
+  background-color: #397df6;
+  border: 2px solid transparent;
+
+  &:focus {
+    border-color: #2f68cc;
+    outline: none;
+  }
+
+  &:hover {
+    background: #73a5ff;
+    border: 2px solid transparent;
+  }
+
+  &:active {
+    background: #2f68cc;
+    border: 2px solid transparent;
+  }
+
+  &.disabled {
+    cursor: auto;
+    color: #8d9094;
+    background: #234e99;
+    border: 2px solid transparent;
+  }
+}
